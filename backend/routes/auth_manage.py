@@ -1,9 +1,10 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, make_response
 import json, uuid
 from utils.validators import valid_email
 from models import Users
 from extension import db
 from utils.password import hash_password, verify_password
+from flask_jwt_extended import create_access_token, set_access_cookies
 
 auth_bp=Blueprint('auth',__name__,url_prefix="/api/v1")
 
@@ -57,4 +58,9 @@ def login():
     if not verify_password(password, account.password.encode('utf-8')):
         return jsonify({"error":"invalid credentials"}), 400
 
-    return jsonify({"message":"logged in successfully", "user_id":account.userid}), 200
+    data=json.dumps({"userid":account.userid, "role":"user"})
+    access_token = create_access_token(data)
+    response = make_response(jsonify({"message": "Login successful"}), 200)
+
+    set_access_cookies(response, access_token)
+    return response

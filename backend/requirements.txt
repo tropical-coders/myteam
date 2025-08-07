@@ -5,3 +5,4 @@ flask_SQLAlchemy
 psycopg2-binary
 uuid
 bcrypt
+flask_jwt_extended

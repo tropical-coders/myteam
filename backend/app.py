@@ -3,7 +3,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 from config import Config
-from extension import db
+from extension import db, jwt
 
 load_dotenv()
 def create_app(config_class=Config):
@@ -12,6 +12,7 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     db.init_app(app)
+    jwt.init_app(app)
 
     from routes.auth_manage import auth_bp
     app.register_blueprint(auth_bp)
