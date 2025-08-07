@@ -15,7 +15,9 @@ def create_app(config_class=Config):
     jwt.init_app(app)
 
     from routes.auth_manage import auth_bp
+    from routes.profile_manage import profile_bp
     app.register_blueprint(auth_bp)
+    app.register_blueprint(profile_bp)
 
     with app.app_context():
         db.create_all()
