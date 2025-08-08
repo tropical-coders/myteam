@@ -1,4 +1,5 @@
 from extension import db
+from sqlalchemy.dialects.postgresql import JSONB
 
 class Users(db.Model):
   __tablename__='user_login'
@@ -24,3 +25,16 @@ class Profile(db.Model):
    image=db.Column(db.String(15))
    def __repr__(self):
         return f'<Profile {self.email}>'
+
+
+class Emails(db.Model):
+   __tablename__='email'
+   sn=db.Column(db.Integer, primary_key=True)
+   template_id=db.Column(db.String(6))
+   from_addr=db.Column(db.String(60))
+   to_addr=db.Column(db.String(60))
+   cc=db.Column(JSONB)
+   sent=db.Column(db.Boolean, default=False)
+   time=db.Column(db.TIMESTAMP)
+   def __repr__(self):
+        return f'<Emails {self.sn}>'
