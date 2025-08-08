@@ -1,11 +1,12 @@
 from extension import db
 from sqlalchemy.dialects.postgresql import JSONB
-
+from datetime import datetime
 class Users(db.Model):
   __tablename__='user_login'
   userid=db.Column(db.String(36), primary_key=True)
   email=db.Column(db.String(60))
   password=db.Column(db.String(200))
+  created=db.Column(db.TIMESTAMP, default=datetime.now())
   def __repr__(self):
         return f'<User {self.email}>'
 
@@ -23,6 +24,7 @@ class Profile(db.Model):
    company=db.Column(db.String(20))
    role=db.Column(db.String(60))
    image=db.Column(db.String(15))
+   status=db.Column(db.String(10), default='inactive')
    def __repr__(self):
         return f'<Profile {self.email}>'
 

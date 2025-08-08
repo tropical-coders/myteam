@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response
 import json, uuid
 from utils.validators import valid_email
-from models import Users
+from models import Users, Profile
 from extension import db
 from utils.password import hash_password, verify_password
 from flask_jwt_extended import create_access_token, set_access_cookies
@@ -34,9 +34,14 @@ def register():
         email=email,
         password=hashed_password.decode('utf-8')
     )
+
+    new_profile = Profile(
+       email=email
+    )
     db.session.add(new_user)
+    db.session.add(new_profile)
     db.session.commit()
-    return jsonify({"message":"your account got created", "user_id":userid}), 200
+    return jsonify({"message":"your account got created"}), 200
 
 
 @auth_bp.route("/login",methods=["GET", "POST"])

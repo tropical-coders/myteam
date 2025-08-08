@@ -19,5 +19,8 @@ def profile():
 
   profile = Profile.query.get(user.email)
   if not profile:
-    return jsonify({"message": "please varify email to add profile"}), 400
-  return jsonify({"role": data["role"], "userid": data["userid"]}), 200
+    return jsonify({"message": "something went wrong"}), 400
+
+  if profile.status=="inactive":
+    return jsonify({"message": "varify your email to update profile"}), 400
+  return jsonify({"message":"profile found"}), 200
