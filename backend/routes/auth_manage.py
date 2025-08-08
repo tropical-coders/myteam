@@ -58,7 +58,7 @@ def login():
     if not verify_password(password, account.password.encode('utf-8')):
         return jsonify({"error":"invalid credentials"}), 400
 
-    data=json.loads({"userid":account.userid, "role":"user"})
+    data=json.dumps({"userid":account.userid, "role":"user"})
     access_token = create_access_token(data)
     response = make_response(jsonify({"message": "Login successful"}), 200)
 
