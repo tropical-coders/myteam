@@ -1,10 +1,10 @@
-import smtplib, os
+import smtplib, os, json
 from dotenv import load_dotenv
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 load_dotenv()
-def email_send():
+def email_send(json_data):
  port = os.getenv("SMTP_PORT")
  smtp_server = os.getenv("SMTP_SERVER")
  sender_email = os.getenv("EMAIL")
@@ -28,10 +28,14 @@ def email_send():
  except Exception as e:
     print(f"An error occurred while reading the file: {e}")
 
+ data=json.loads(json_data)
+ for key, value in data.items():
+        placeholder = f"{{{{ {key} }}}}"
+        html = html.replace(placeholder, str(value))
 
  message = MIMEMultipart()
  message["From"] = sender_email
- message["To"] = receiver_email
+ message["To"] = data.get("to")
  message["Subject"] = subject
 
  message.attach(MIMEText(html, "html"))

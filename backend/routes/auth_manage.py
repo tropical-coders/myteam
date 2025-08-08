@@ -1,10 +1,11 @@
 from flask import Blueprint, request, jsonify, make_response
-import json, uuid
+import json, uuid, random
 from utils.validators import valid_email
 from models import Users, Profile
 from extension import db
 from utils.password import hash_password, verify_password
-from flask_jwt_extended import create_access_token, set_access_cookies
+from flask_jwt_extended import create_access_token, set_access_cookies, jwt_required, get_jwt_identity
+from send_email import email_send
 
 auth_bp=Blueprint('auth',__name__,url_prefix="/api/v1")
 
@@ -63,9 +64,45 @@ def login():
     if not verify_password(password, account.password.encode('utf-8')):
         return jsonify({"error":"invalid credentials"}), 400
 
+    profile = Profile.query.get(account.email)
+    if not profile:
+     return jsonify({"message": "something went wrong"}), 400
+
+    if profile.status=="offline":
+      profile.status='online'
+      db.session.commit()
+
     data=json.dumps({"userid":account.userid, "role":"user"})
     access_token = create_access_token(data)
     response = make_response(jsonify({"message": "Login successful"}), 200)
 
     set_access_cookies(response, access_token)
     return response
+
+
+@auth_bp.route("/verify",methods=["GET"])
+@jwt_required()
+def send_otp():
+  data=get_jwt_identity()
+  data=json.loads(data)
+  user=Users.query.get(data["userid"])
+  if not user:
+    return jsonify({"message": "invalid access"}), 400
+
+  profile = Profile.query.get(user.email)
+  if not profile:
+    return jsonify({"message": "something went wrong"}), 400
+
+  if profile.status!="inactive":
+    return jsonify({"message": "your email is already verified"}), 400
+
+  otp=""
+  for i in range(1,6):
+    otp+=str(random.randint(0,10))
+  profile.code=otp
+  db.session.commit()
+  info=json.dumps({"otp":otp,"to":user.email})
+  email_send(info)
+  return jsonify({"message":"OTP has been sent to registered email"}), 200
+
+

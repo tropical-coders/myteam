@@ -23,6 +23,5 @@ def profile():
     return jsonify({"message": "something went wrong"}), 400
 
   if profile.status=="inactive":
-    email_send()
     return jsonify({"message": "varify your email to update profile"}), 400
   return jsonify({"message":"profile found"}), 200
