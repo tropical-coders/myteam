@@ -52,21 +52,21 @@ def login():
     password = data.get("password").strip()
 
     if not email or not password:
-        return jsonify({"error":"missing parameter"}), 400
+        return jsonify({"success":False,"message":"missing parameter"}), 400
 
     if not valid_email(email):
-        return jsonify({"error":"invalid email format"}), 400
+        return jsonify({"success":False,"message":"invalid email format"}), 400
 
     account = Users.query.filter_by(email=email).first()
     if not account:
-        return jsonify({"error":"invalid credentials"}), 400
+        return jsonify({"success":False,"message":"invalid credentials"}), 400
 
     if not verify_password(password, account.password.encode('utf-8')):
-        return jsonify({"error":"invalid credentials"}), 400
+        return jsonify({"success":False,"message":"invalid credentials"}), 400
 
     profile = Profile.query.get(account.email)
     if not profile:
-     return jsonify({"message": "something went wrong"}), 400
+     return jsonify({"success":False,"message": "something went wrong"}), 400
 
     if profile.status=="offline":
       profile.status='online'
@@ -74,7 +74,7 @@ def login():
 
     data=json.dumps({"userid":account.userid, "role":"user"})
     access_token = create_access_token(data)
-    response = make_response(jsonify({"message": "Login successful"}), 200)
+    response = make_response(jsonify({"success":True,"message": "Login successful"}), 200)
 
     set_access_cookies(response, access_token)
     return response
