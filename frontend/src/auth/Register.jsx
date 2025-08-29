@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const Login = () => {
+const Register = () => {
     const API_URL = import.meta.env.VITE_API_URL;
     const [formData, setFormData] = useState({
         email: '',
@@ -20,7 +20,7 @@ const Login = () => {
         setMessage({ type: '', text: '' });
 
         try {
-            const { data } = await axios.post(`${API_URL}/api/v1/login`, formData);
+            const { data } = await axios.post(`${API_URL}/api/v1/register`, formData);
             setMessage({ 
                 type: data.success,
                 text: data.message || 'No message provided'
@@ -49,7 +49,7 @@ const Login = () => {
                         </svg>
                     </div>
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
-                        Sign in
+                        Create an account
                     </h2>
                 </div>
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -103,20 +103,17 @@ const Login = () => {
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
-                                    Signing in...
+                                    Creating account...
                                 </span>
                             ) : (
-                                'Sign in'
+                                'Register'
                             )}
                         </button>
                     </div>
                 </form>
                 <div className="flex items-center justify-between mt-4">
-                    <a href="/register" className="text-sm text-white hover:text-indigo-200 transition-colors">
-                        Don't have an account? Sign up
-                    </a>
-                    <a href="/forgot-password" className="text-sm text-white hover:text-indigo-200 transition-colors">
-                        Forgot password?
+                    <a href="/" className="text-sm text-white hover:text-indigo-200 transition-colors">
+                        Already have an account? Sign in
                     </a>
                 </div>
             </div>
@@ -124,4 +121,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Register;
