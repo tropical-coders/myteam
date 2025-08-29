@@ -10,8 +10,6 @@ def email_send(json_data):
  sender_email = os.getenv("EMAIL")
  password = os.getenv("EMAIL_PASS")
 
- receiver_email = "pradeepkh312@gmail.com"
-
  subject = "HTML Email without Attachment"
 
  base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -37,7 +35,7 @@ def email_send(json_data):
  message["From"] = sender_email
  message["To"] = data.get("to")
  message["Subject"] = subject
-
+ receiver_email = data.get("to")
  message.attach(MIMEText(html, "html"))
 
  with smtplib.SMTP(smtp_server, port) as server:

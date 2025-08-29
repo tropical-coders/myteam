@@ -16,12 +16,29 @@ def profile():
   data=json.loads(data)
   user=Users.query.get(data["userid"])
   if not user:
-    return jsonify({"message": "invalid access"}), 400
+    return jsonify({"success": False,"message": "invalid access"}), 400
 
   profile = Profile.query.get(user.email)
   if not profile:
-    return jsonify({"message": "something went wrong"}), 400
+    return jsonify({"success":False,"message": "something went wrong"}), 400
 
   if profile.status=="inactive":
-    return jsonify({"message": "varify your email to update profile"}), 400
-  return jsonify({"message":"profile found"}), 200
+    return jsonify({"success":False,"message": "varify your email to update profile"}), 400
+  return jsonify({"success":True,"message":"profile found"}), 200
+
+
+@profile_bp.route("/",methods=["POST"])
+@jwt_required()
+def profile_update():
+  data=get_jwt_identity()
+  data=json.loads(data)
+  user=Users.query.get(data["userid"])
+  if not user:
+    return jsonify({"success": False,"message": "invalid access"}), 400
+
+  profile = Profile.query.get(user.email)
+  if not profile:
+    return jsonify({"success": False,"message": "something went wrong"}), 400
+
+  if profile.status=="inactive":
+    return jsonify({"success": False,"message": "varify your email to update profile"}), 400

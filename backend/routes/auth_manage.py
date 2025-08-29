@@ -87,14 +87,14 @@ def send_otp():
   data=json.loads(data)
   user=Users.query.get(data["userid"])
   if not user:
-    return jsonify({"message": "invalid access"}), 400
+    return jsonify({"success":False,"message": "invalid access"}), 400
 
   profile = Profile.query.get(user.email)
   if not profile:
-    return jsonify({"message": "something went wrong"}), 400
+    return jsonify({"success":False,"message": "something went wrong"}), 400
 
   if profile.status!="inactive":
-    return jsonify({"message": "your email is already verified"}), 400
+    return jsonify({"success":False,"message": "your email is already verified"}), 400
 
   otp=""
   for i in range(1,6):
@@ -103,6 +103,38 @@ def send_otp():
   db.session.commit()
   info=json.dumps({"otp":otp,"to":user.email})
   email_send(info)
-  return jsonify({"message":"OTP has been sent to registered email"}), 200
+  return jsonify({"success":True,"message":"OTP has been sent to registered email"}), 200
 
 
+@auth_bp.route("/verify",methods=["POST"])
+@jwt_required()
+def verify_otp():
+  data=get_jwt_identity()
+  data=json.loads(data)
+  user=Users.query.get(data["userid"])
+  if not user:
+    return jsonify({"success":False,"message": "invalid access"}), 400
+
+  profile = Profile.query.get(user.email)
+  if not profile:
+    return jsonify({"success":False,"message": "something went wrong"}), 400
+  if profile.status!="inactive":
+    return jsonify({"success":False,"message": "your email is already verified"}), 400
+
+  try:
+   inputs=request.json
+   otp = inputs.get("otp")
+  except:
+   return jsonify({"success":False,"message": "missing parameter"}), 400
+  if not otp:
+    return jsonify({"success":False,"message": "missing parameter"}), 400
+
+  if len(otp) != 5:
+    return jsonify({"success":False,"message": "invalid otp"}), 400
+
+  if otp != profile.code:
+    return jsonify({"success":False,"message": "invalid otp"}), 400
+  profile.code=""
+  profile.status = "online"
+  db.session.commit()
+  return jsonify({"success":True,"message":"email has been verified"}), 200
