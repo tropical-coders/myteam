@@ -16,16 +16,16 @@ def register():
     password = data.get("password").strip()
 
     if not email or not password:
-        return jsonify({"error":"missing parameter"}), 400
+        return jsonify({"success":False,"message":"missing parameter"}), 400
 
     if not valid_email(email):
-        return jsonify({"error":"invalid email format"}), 400
+        return jsonify({"success":False,"message":"invalid email format"}), 400
 
     if len(password)<6:
-        return jsonify({"error":"password should be minimum 6 characters"}), 400
+        return jsonify({"success":False,"message":"password should be minimum 6 characters"}), 400
     existing_user = Users.query.filter_by(email=email).first()
     if existing_user:
-        return jsonify({"error": "An account with this email already exists"}), 409
+        return jsonify({"success":False,"message": "An account with this email already exists"}), 409
 
     hashed_password = hash_password(password)
     userid = str(uuid.uuid4())
@@ -42,7 +42,7 @@ def register():
     db.session.add(new_user)
     db.session.add(new_profile)
     db.session.commit()
-    return jsonify({"message":"your account got created"}), 200
+    return jsonify({"success":True,"message":"your account got created"}), 200
 
 
 @auth_bp.route("/login",methods=["GET", "POST"])
