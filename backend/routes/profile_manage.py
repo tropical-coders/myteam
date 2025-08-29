@@ -16,7 +16,7 @@ def profile():
   data=json.loads(data)
   user=Users.query.get(data["userid"])
   if not user:
-    return jsonify({"success": False,"message": "invalid access"}), 400
+    return jsonify({"success":False,"message": "invalid access"}), 400
 
   profile = Profile.query.get(user.email)
   if not profile:
@@ -24,7 +24,8 @@ def profile():
 
   if profile.status=="inactive":
     return jsonify({"success":False,"message": "varify your email to update profile"}), 400
-  return jsonify({"success":True,"message":"profile found"}), 200
+  output={ "f_name":profile.f_name,"l_name":profile.l_name,"code":profile.code,"mobile":profile.mobile,"country":profile.country,"city":profile.city,"pin":profile.pin,"company":profile.company,"role":profile.role ,"image":profile.image}
+  return jsonify({"success":True,"message":"profile found", "data":output}), 200
 
 
 @profile_bp.route("/",methods=["POST"])
@@ -42,3 +43,26 @@ def profile_update():
 
   if profile.status=="inactive":
     return jsonify({"success": False,"message": "varify your email to update profile"}), 400
+
+  try:
+    inputs=request.json
+  except:
+    return jsonify({"success": False,"message": "missing parameter"}), 400
+
+
+  f_name = inputs.get("f_name")
+  l_name = inputs.get("l_name")
+  code = inputs.get("code")
+  mobile = inputs.get("mobile")
+  country = inputs.get("country")
+  city = inputs.get("city")
+  pin = inputs.get("pin")
+  company = inputs.get("company")
+  role = inputs.get("role")
+  image = inputs.get("image")
+
+
+  if not f_name or not l_name or not code or not mobile or not country or not city or not pin or not company or not role or not image:
+    return jsonify({"success": False,"message": "missing parameter"}), 400
+
+  return jsonify({"success":True,"message":"profile found"}), 200
