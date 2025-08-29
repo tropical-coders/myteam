@@ -23,7 +23,7 @@ const Verify = () => {
         setMessage({ type: '', text: '' });
 
         try {
-            const { data } = await axios.post(`${API_URL}/api/v1/get-otp`);
+            const { data } = await axios.get(`${API_URL}/api/v1/verify`, { withCredentials: true });
             setMessage({ 
                 type: true,
                 text: 'OTP sent successfully to your email'
@@ -45,7 +45,7 @@ const Verify = () => {
         setMessage({ type: '', text: '' });
 
         try {
-            const { data } = await axios.post(`${API_URL}/api/v1/verify`, formData);
+            const { data } = await axios.post(`${API_URL}/api/v1/verify`, formData, { withCredentials: true });
             setMessage({ 
                 type: data.success,
                 text: data.message || 'OTP verified successfully'
