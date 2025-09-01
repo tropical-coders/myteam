@@ -149,4 +149,4 @@ def status():
   if not user:
     return jsonify({"success":False,"message": "invalid access"}), 400
 
-  return jsonify({"success":True,"role":data["role"]}), 200
+  return jsonify({"success":True,"role":data["role"], "message":"user logged in"}), 200
