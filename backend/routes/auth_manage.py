@@ -138,3 +138,15 @@ def verify_otp():
   profile.status = "online"
   db.session.commit()
   return jsonify({"success":True,"message":"email has been verified"}), 200
+
+
+@auth_bp.route("/status",methods=["GET"])
+@jwt_required()
+def status():
+  data=get_jwt_identity()
+  data=json.loads(data)
+  user=Users.query.get(data["userid"])
+  if not user:
+    return jsonify({"success":False,"message": "invalid access"}), 400
+
+  return jsonify({"success":True,"role":data["role"]}), 200
