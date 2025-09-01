@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
-
+import { useNavigate, Link } from "react-router-dom";
 const Login = () => {
+    const navigate = useNavigate();
     const API_URL = import.meta.env.VITE_API_URL;
     const [formData, setFormData] = useState({
         email: '',
@@ -18,17 +19,24 @@ const Login = () => {
         e.preventDefault();
         setLoading(true);
         setMessage({ type: '', text: '' });
+        if (!formData.email || !formData.password) {
+         setMessage({ type: false, text: "Please fill in all fields." });
+         setLoading(false);
+         return;
+     }
 
         try {
-            const { data } = await axios.post(`${API_URL}/api/v1/login`, formData, { withCredentials: true });
+            const response = await axios.post(`${API_URL}/api/v1/login`, formData, { withCredentials: true });
+            const data = response.data;
+            console.log('Login response:', data);
             setMessage({ 
                 type: data.success,
                 text: data.message || 'No message provided'
             });
-            if (data.success) {
-                // JWT token is automatically handled as HTTP-only cookie
-                // Store user info in local state or context if neede
-               // or use React Router navigation
+            if (data.success === true) {
+                setTimeout(() => {
+                    window.location.href = "/email-verify";
+                }, 300); 
             }
         } catch (error) {
             setMessage({
@@ -114,12 +122,12 @@ const Login = () => {
                     </div>
                 </form>
                 <div className="flex items-center justify-between mt-4">
-                    <a href="/register" className="text-sm text-white hover:text-indigo-200 transition-colors">
-                        Don't have an account? Sign up
-                    </a>
-                    <a href="/forgot-password" className="text-sm text-white hover:text-indigo-200 transition-colors">
-                        Forgot password?
-                    </a>
+                    <Link to="/register" className="text-sm text-white hover:text-indigo-200 transition-colors">
+                          Don't have an account? Sign up
+                    </Link>
+                    <Link to="/forgot-password" className="text-sm text-white hover:text-indigo-200 transition-colors">
+                          Forgot password?
+                    </Link>
                 </div>
             </div>
         </div>
