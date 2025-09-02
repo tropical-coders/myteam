@@ -35,7 +35,7 @@ const Login = () => {
             });
             if (data.success === true) {
                 setTimeout(() => {
-                    window.location.href = "/email-verify";
+                    window.location.href = "/dashboard";
                 }, 300); 
             }
         } catch (error) {
@@ -53,10 +53,12 @@ const Login = () => {
             <div className="max-w-md w-full space-y-8 p-8 backdrop-blur-lg bg-white/30 rounded-2xl shadow-xl">
                 <div className="flex flex-col items-center">
                     {/* Circular Brand Logo */}
-                    <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-lg">
-                        <svg className="w-16 h-16 text-indigo-600" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
-                        </svg>
+                    <div className="w-24 h-24 bg-black rounded-full flex items-center justify-center shadow-lg">
+                        <img 
+                    src="/logo.png"
+                    alt="Tool Logo" 
+                    className="h-20 w-20 mb-2"
+                />
                     </div>
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
                         Sign in
