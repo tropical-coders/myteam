@@ -2,7 +2,7 @@ import { HomeIcon, FolderKanbanIcon, CheckSquare2Icon, UsersIcon, SettingsIcon, 
 
 const Navbar = () => {
     return (
-        <div className="w-50 h-screen bg-gray-800 fixed left-0 top-0 text-white">
+        <div className="w-50 h-screen bg-gradient-to-br from-blue-900 to-black fixed left-0 top-0 text-white">
             <div className="flex items-center justify-evenly p-4 border-b border-gray-700">
             <img 
             src="/logo.png"

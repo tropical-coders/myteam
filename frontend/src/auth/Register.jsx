@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { Link } from "react-router-dom";
 
 const Register = () => {
     const API_URL = import.meta.env.VITE_API_URL;
@@ -39,8 +40,8 @@ const Register = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8 p-8 backdrop-blur-lg bg-white/30 rounded-2xl shadow-xl">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-black py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-md w-full space-y-8 p-8 backdrop-blur-lg bg-white/10 rounded-2xl shadow-xl">
                 <div className="flex flex-col items-center">
                     {/* Circular Brand Logo */}
                     <div className="w-24 h-24 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -114,9 +115,9 @@ const Register = () => {
                     </div>
                 </form>
                 <div className="flex items-center justify-between mt-4">
-                    <a href="/" className="text-sm text-white hover:text-indigo-200 transition-colors">
-                        Already have an account? Sign in
-                    </a>
+                    <Link to="/" className="text-sm text-white hover:text-indigo-200 transition-colors">
+                          Already have an account? Sign in
+                    </Link>
                 </div>
             </div>
         </div>

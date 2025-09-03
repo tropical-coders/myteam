@@ -64,8 +64,8 @@ const Verify = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8 p-8 backdrop-blur-lg bg-white/30 rounded-2xl shadow-xl">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-black py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-md w-full space-y-8 p-8 backdrop-blur-lg bg-white/10 rounded-2xl shadow-xl">
                 <div className="flex flex-col items-center">
                     <div className="w-24 h-24 bg-black rounded-full flex items-center justify-center shadow-lg">
                          <img 

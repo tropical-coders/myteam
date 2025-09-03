@@ -3,28 +3,19 @@ import Navbar from '../components/Navbar';
 import { FaBars } from 'react-icons/fa';
 
 const Dashboard = () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-    const toggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen);
-    };
+   
 
     return (
         <div className="flex h-screen bg-gray-100">
             {/* Sidebar */}
-            <div className={`transition-all duration-300 ${isSidebarOpen ? 'w-64' : 'w-0'}`}>
+            <div className= "w-64">
                 <Navbar />
             </div>
 
             {/* Main Content */}
             <div className="flex-1">
                 {/* Toggle Button */}
-                <button
-                    onClick={toggleSidebar}
-                    className="m-4 p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                >
-                    <FaBars />
-                </button>
+               
 
                 {/* Dashboard Content */}
                 <div className="p-6">
