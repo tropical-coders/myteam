@@ -3,6 +3,8 @@ import Login from "./auth/Login";
 import Register from "./auth/Register";
 import Verify from "./auth/Verify";
 import Dashboard from "./pages/Dashboard";
+import Settings from "./pages/Settings";
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ProtectedRoute from "./ProtectedRoute";
@@ -45,6 +47,7 @@ function App() {
         <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
           <Route path="/email-verify" element={<Verify />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/settings" element={<Settings />} />
         </Route>
       </Routes>
     </BrowserRouter>
